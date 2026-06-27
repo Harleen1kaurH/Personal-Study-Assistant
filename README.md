@@ -5,10 +5,11 @@ Built to learn how production AI retrieval systems actually work, not just how t
 Upload a PDF -> ask a question -> get a grounded answer with section citations, flashcards, and a quiz.
 
 ## Demo: 
+<img width="2038" height="1222" alt="Image 2026-06-27 at 12 28 AM" src="https://github.com/user-attachments/assets/ef526b91-0feb-4e26-939f-d00bf0f1b077" />
 <img width="2182" height="1490" alt="Image 2026-06-27 at 12 31 AM" src="https://github.com/user-attachments/assets/9034ca8c-ee3d-4464-b074-db6db6875041" />
 <img width="2122" height="1366" alt="Image 2026-06-27 at 12 30 AM" src="https://github.com/user-attachments/assets/2ad377a5-064e-46ba-9528-605d891b7e6c" />
 <img width="1966" height="956" alt="Image 2026-06-27 at 12 28 AM (1)" src="https://github.com/user-attachments/assets/4dd63df2-e84b-46ed-adda-58f3482f79b5" />
-<img width="2038" height="1222" alt="Image 2026-06-27 at 12 28 AM" src="https://github.com/user-attachments/assets/ef526b91-0feb-4e26-939f-d00bf0f1b077" />
+
 
 ## Tech Stack
 | Layer | Tool | Why |
