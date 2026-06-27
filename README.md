@@ -74,7 +74,8 @@ streamlit run src/app.py
 The first run embeds your PDF and writes to chroma_db/. Every subsequent run skips embedding entirely and loads instantly.
 
 ## Project Structure
-
+ 
+```
 study-assistant/
 ├── .env                     ← GOOGLE_API_KEY (never commit this)
 ├── .env.example             ← safe to commit, shows required keys
@@ -90,3 +91,4 @@ study-assistant/
     ├── vectorstore.py       ← ChromaDB embed + persist + retrieve
     ├── rag.py               ← full RAG pipeline
     └── app.py               ← Streamlit UI
+```
