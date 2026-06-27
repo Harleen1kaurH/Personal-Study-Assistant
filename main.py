@@ -26,8 +26,8 @@ import os
 # Add src/ to path so imports work from project root
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "src"))
 
-from loader import load_and_chunk
-from vectorstore import embed_and_store, collection_exists
+from src.loader import load_and_chunk
+from src.vectorstore import embed_and_store, collection_exists
 import rag
 
 
