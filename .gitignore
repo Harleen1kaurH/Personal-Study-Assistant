@@ -1,0 +1,47 @@
+# ── Environment & secrets ──────────────────────────────────────────────────────
+.env
+.env.*
+!.env.example
+
+# ── Python ────────────────────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*.pyo
+.Python
+*.egg-info/
+dist/
+build/
+*.egg
+
+# ── Virtual environments ──────────────────────────────────────────────────────
+.venv/
+venv/
+env/
+ENV/
+
+# ── ChromaDB (vector store — can be rebuilt from source docs) ─────────────────
+chroma_db/
+
+# ── Eval outputs (generated, not source) ─────────────────────────────────────
+eval_history.csv
+traces.jsonl
+
+# ── Uploaded documents (personal/sensitive content) ──────────────────────────
+data/
+*.pdf
+*.docx
+
+# ── macOS ─────────────────────────────────────────────────────────────────────
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# ── IDEs ──────────────────────────────────────────────────────────────────────
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# ── Jupyter ───────────────────────────────────────────────────────────────────
+.ipynb_checkpoints/
+*.ipynb
