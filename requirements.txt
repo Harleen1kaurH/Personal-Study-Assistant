@@ -8,3 +8,10 @@ pypdf
 pydantic
 streamlit
 python-dotenv
+
+# ── Eval dependencies ──────────────────────────────────────────────────────────
+pytest
+ragas
+langchain-openai   # RAGAS judge LLM
+pandas             # inspect RAGAS results as DataFrame
+
