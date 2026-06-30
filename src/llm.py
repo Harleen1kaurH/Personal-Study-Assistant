@@ -34,10 +34,10 @@ def get_llm() -> ChatGoogleGenerativeAI:
     This is the ONLY function the rest of the codebase calls.
     Changing the model or provider: edit this function only.
     """
-    api_key = os.getenv("GOOGLE_API_KEY")
+    api_key = os.getenv("GEMENI_API_KEY")
     if not api_key:
         raise ValueError(
-            "GOOGLE_API_KEY not found. "
+            "GEMNI_API_KEY not found. "
             "Copy .env.example to .env and add your key from aistudio.google.com/apikey"
         )
 
