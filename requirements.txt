@@ -12,6 +12,6 @@ python-dotenv
 # ── Eval dependencies ──────────────────────────────────────────────────────────
 pytest
 ragas
-langchain-openai   # RAGAS judge LLM
+langchain-groq     # Groq LLM for synthetic Q&A generation (independent from pipeline)
 pandas             # inspect RAGAS results as DataFrame
 

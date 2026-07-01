@@ -137,7 +137,8 @@ def ask_question(question: str, file_hash: str) -> dict:
     print("[RAG] Generating answer...")
     llm = get_llm()
     response = llm.invoke(prompt)
-    answer = response.content
+    raw = response.content
+    answer = raw[0]['text'] if isinstance(raw, list) else raw
 
     return {
         "question": question,
@@ -230,9 +231,11 @@ def ask_question_with_topic(question: str, file_hash: str, topic_hint: str = "")
 
     llm = get_llm()
     response = llm.invoke(prompt)
+    raw = response.content
+    answer = raw[0]['text'] if isinstance(raw, list) else raw
 
     return {
         "question": question,
-        "answer": response.content,
+        "answer": answer,
         "chunks": chunks,
     }

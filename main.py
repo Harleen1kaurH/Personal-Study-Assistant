@@ -30,7 +30,6 @@ from src.loader import load_and_chunk
 from src.vectorstore import embed_and_store, collection_exists
 import rag
 
-
 def run_pipeline(doc_path: str):
     print("=" * 60)
     print("PERSONAL STUDY ASSISTANT — Pipeline Test")
@@ -63,7 +62,7 @@ def run_pipeline(doc_path: str):
     result = rag.ask_question(question, file_hash)
 
     print(f"\nQ: {result['question']}")
-    print(f"\nA: {result['answer'][0]['text']}")
+    print(f"\nA: {result['answer']}")
 
     # print(f"\nRetrieved {len(result['chunks'])} chunks:")
     

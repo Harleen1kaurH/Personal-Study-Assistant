@@ -146,7 +146,7 @@ with tab_qa:
                 result = rag.ask_question(question, st.session_state.file_hash)
 
             st.markdown("### Answer")
-            st.markdown(result["answer"][0]['text'])
+            st.markdown(result["answer"])
 
             with st.expander("View retrieved chunks"):
                 for i, chunk in enumerate(result["chunks"], 1):
