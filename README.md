@@ -21,6 +21,7 @@ Upload a PDF -> ask a question -> get a grounded answer with section citations, 
 | Structured output | Pydantic + `.with_structured_output()` | Type-safe, zero JSON parsing |
 | UI | Streamlit | Demo-ready in minimal code |
 | Env management | `python-dotenv` | Keep API keys out of code |
+| Evaluation | `pytest` + `RAGAS` | Structural/safety tests + LLM-judged quality metrics |
 
 ## Design Decisions
 
@@ -31,13 +32,28 @@ Character splitting is blind — it cuts mid-sentence and merges unrelated conce
 chromadb.Client() is in-memory — embeddings die when the script ends, forcing a full re-embed on every run. PersistentClient writes to disk and survives restarts. On top of that, an MD5 hash of the PDF path is used as the collection name: if the collection already exists on startup, embedding is skipped entirely. A 50-page PDF goes from a 30-second cold start to an instant load on every subsequent run.
 
 #### Pydantic schemas + .with_structured_output() over prompt-based JSON
-Asking the LLM to "return only JSON" in a prompt is ~85% reliable — models add markdown fences, hallucinate field names, and fail silently. Binding a Pydantic schema with .with_structured_output() constrains the model to match the schema exactly (~99% reliable) and returns a typed Python object. No json.loads(), no strip(), no try/except. result.cards[0].front just works.
+Asking the LLM to "return only JSON" in a prompt is unreliable — models add markdown fences, hallucinate field names, and fail silently. Binding a Pydantic schema with .with_structured_output() constrains the model to match the schema exactly and returns a typed Python object. No json.loads(), no strip(), no try/except. result.cards[0].front just works.
 
 #### LangChain for LLM calls only — not for retrieval logic
 LangChain's ChatGoogleGenerativeAI wrapper gives a unified .invoke() interface across every model provider. Switching from Gemini to GPT-4 or Claude is one line. But LangChain chains and retrievers wrap too much logic in abstraction — retrieval, chunking, and prompt construction are plain Python so every step is explicit, debuggable, and yours to reason about.
 
 #### Standard RAG over a RAG Agent
 This assistant has one job i.e. answer questions from your notes. That's a single, well-defined retrieval task. Agents add non-determinism, multiple LLM calls, and debugging complexity with no benefit for this use case. The fixed pipeline is faster, cheaper, and easy to explain step by step in an interview.
+
+## Evaluation
+
+Two levels, following Hamel Husain's eval framework:
+
+**Level 1 — `tests/test_assertions.py`** — fast, deterministic pytest checks with no LLM calls. Verifies the pipeline is *functioning*: answers aren't empty/too short/too long, retrieval returns chunks with valid similarity scores, and no internal ChromaDB IDs or metadata leak into user-facing answers.
+
+**Level 2 — `tests/test_ragas_eval.py`** — LLM-judged RAGAS metrics that check whether the answers are actually *good*: Faithfulness (is the answer grounded in retrieved context, or hallucinating?), Answer Relevancy (does it address the question asked?), Context Precision (are the useful chunks ranked near the top?), and Context Recall (did retrieval pull in everything needed?). Uses the same Groq LLM and the same `all-MiniLM-L6-v2` embedding model as the pipeline itself, so scoring stays consistent with what's actually being evaluated — no extra API keys needed.
+
+```bash
+pytest tests/ -v -s              # run both levels as a pass/fail gate
+python tests/test_ragas_eval.py  # run RAGAS standalone, print + save a per-question report to eval_history.csv
+```
+
+Failing RAGAS thresholds point at specific fixes — e.g. low Context Precision suggests tuning `TOP_K` or the embedding model in `vectorstore.py`; low Context Recall suggests reviewing chunking in `loader.py`.
 
 ## Setup
 **1. Clone and create a virtual environment**
@@ -84,6 +100,10 @@ study-assistant/
 ├── main.py                  ← terminal interface for testing
 ├── data/                    ← drop your PDFs here
 ├── chroma_db/               ← auto-created, persists embeddings
+├── tests/
+│   ├── test_assertions.py   ← Level 1: structural/retrieval/safety checks
+│   ├── test_ragas_eval.py   ← Level 2: RAGAS-scored answer quality
+│   └── data/                ← synthetic_questions.json + generate_inputs.py
 └── src/
     ├── llm.py               ← LangChain LLM setup (one swap point)
     ├── outputs.py           ← Pydantic schemas + structured LLMs
