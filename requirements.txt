@@ -14,4 +14,5 @@ pytest
 ragas
 langchain-groq     # Groq LLM for synthetic Q&A generation (independent from pipeline)
 pandas             # inspect RAGAS results as DataFrame
+datasets           # HF Dataset object RAGAS's evaluate() consumes
 
